@@ -50,6 +50,17 @@
         <height>78</height>
        </rect>
       </property>
+      <widget class="QWidget" name="gridLayoutWidget">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>0</y>
+         <width>160</width>
+         <height>80</height>
+        </rect>
+       </property>
+       <layout class="QGridLayout" name="tools_gridLayout"/>
+      </widget>
      </widget>
     </widget>
    </widget>
