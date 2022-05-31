@@ -7,3 +7,5 @@ from .toolbox import *
 from .canvas import *
 from .flowlayout import *
 from .toolsbutton import *
+from .toolsslider import *
+from .configmgr import *

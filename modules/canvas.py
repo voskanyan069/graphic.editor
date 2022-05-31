@@ -1,20 +1,23 @@
+from configmgr import ConfigMgr
+
 from PyQt5.QtGui import QColor, QPixmap, QPainter, QPen
 from PyQt5.QtWidgets import QLabel
 
 class Canvas(QLabel):
     def __init__(self, parent):
         super().__init__(parent)
+        self.configMgr = ConfigMgr()
         parent.setCentralWidget(self)
         p = self.palette()
-        p.setColor(self.backgroundRole(), QColor('#fff'))
+        p.setColor(self.backgroundRole(), self.configMgr.getFillColor())
         self.setAutoFillBackground(True)
         self.setPalette(p)
-        self.myPixmap = QPixmap(200,200)
-        self.setMinimumSize(200,200)
+        self.myPixmap = QPixmap(200, 200)
+        self.setMinimumSize(200, 200)
         self.painter = QPainter(self.myPixmap)
-        self.pen = QPen(QColor('#000'))
+        self.pen = QPen(self.configMgr.getPenColor())
         self.painter.setPen(self.pen)
-        self.painter.fillRect(0,0,200,200, QColor('#fff'))
+        self.painter.fillRect(0, 0, 200, 200, self.configMgr.getFillColor())
         self.setPixmap(self.myPixmap)
         self.last = None
 
@@ -26,6 +29,9 @@ class Canvas(QLabel):
             self.update()
 
     def mousePressEvent(self, event):
+        self.pen = QPen(self.configMgr.getPenColor())
+        self.pen.setWidth(self.configMgr.getPenSize())
+        self.painter.setPen(self.pen)
         self.last = event.pos()
 
     def mouseReleaseEvent(self, event):
@@ -33,12 +39,12 @@ class Canvas(QLabel):
 
     def updateSize(self, width, height):
         pm = QPixmap(width, height)
-        pm.fill(QColor('#fff'))
+        pm.fill(self.configMgr.getFillColor())
         old = self.myPixmap
         self.myPixmap = pm
-        self.pen = QPen(QColor('#000'))
+        self.pen = QPen(self.configMgr.getPenColor())
         self.painter = QPainter(pm)
-        self.painter.drawPixmap(0,0,old)
+        self.painter.drawPixmap(0, 0, old)
         self.setPixmap(pm)
 
     def resizeEvent(self, event):
